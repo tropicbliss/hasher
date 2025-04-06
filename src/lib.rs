@@ -15,7 +15,7 @@ pub struct HashOutput {
 
 #[derive(Deserialize)]
 pub struct VerifyInput {
-    hashed: String,
+    hash: String,
     password: String,
 }
 
@@ -36,7 +36,7 @@ async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
         }
         Method::Post if req.path() == "/verify" => {
             let input: VerifyInput = req.json().await?;
-            let result = hashing::verify(&input.hashed, &input.password).unwrap();
+            let result = hashing::verify(&input.hash, &input.password).unwrap();
             Response::from_json(&VerifyOutput { is_valid: result })
         }
         _ => Response::error("Invalid request", 400),
