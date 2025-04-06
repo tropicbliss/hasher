@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Hashing API Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            border-bottom: 2px solid #eaecef;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eaecef;
+        }
+
+        code {
+            font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+            background-color: #f6f8fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #f6f8fa;
+            padding: 16px;
+            border-radius: 6px;
+            overflow: auto;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .post {
+            background-color: #49cc90;
+        }
+
+        .get {
+            background-color: #61affe;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .response-container {
+            margin-top: 15px;
+        }
+
+        .example {
+            margin: 20px 0;
+        }
+
+        .url {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Password Hashing API Documentation</h1>
+
+    <p>This API provides endpoints for securely hashing passwords and verifying password hashes. The service is designed
+        to handle password security operations while maintaining best practices in cryptographic hashing.</p>
+
+    <div
+        style="background-color: #fff3cd; color: #856404; padding: 15px; border-left: 4px solid #ffeeba; margin: 20px 0; border-radius: 0 6px 6px 0;">
+        <h3 style="color: #856404;">⚠️ Security Warning</h3>
+        <p>Do not use actual passwords when testing this API, even if you're the only one using it. Always use test
+            passwords for development and testing purposes.</p>
+    </div>
+
+    <h2>Purpose</h2>
+    <p>This API was created to provide a fast Argon2 hashing solution that is accessible regardless of programming
+        language, stack, or environment. It offers a language-agnostic way to implement secure password hashing through
+        a simple HTTP interface.</p>
+
+    <h2>About Argon2</h2>
+    <p>This API implements Argon2, the winner of the <a href="https://www.password-hashing.net/"
+            target="_blank">Password Hashing Competition</a>. Argon2 is a modern password hashing algorithm designed to
+        be resistant to both brute-force and side-channel attacks.</p>
+
+    <p>The implementation uses secure default parameters that are suitable for most use cases:
+    <ul>
+        <li>Memory cost: Optimized for security while maintaining performance</li>
+        <li>Time cost: Balanced to provide security without excessive latency</li>
+        <li>Parallelism: Configured for efficient operation</li>
+    </ul>
+    </p>
+
+    <h2>API Overview</h2>
+    <p>The API provides two main functionalities:</p>
+    <ul>
+        <li>Generating secure password hashes using Argon2</li>
+        <li>Verifying passwords against existing Argon2 hashes</li>
+    </ul>
+
+    <h2>Endpoints</h2>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span><span class="url">/</span></h3>
+        <p>Returns the HTML instructions page with documentation.</p>
+
+        <h4>Response</h4>
+        <p>HTML documentation page.</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method post">POST</span><span class="url">/hash</span></h3>
+        <p>Generates a secure hash from a provided password.</p>
+
+        <h4>Request Body</h4>
+        <table>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>String</td>
+                <td>Yes</td>
+                <td>The password to be hashed</td>
+            </tr>
+        </table>
+
+        <div class="example">
+            <h4>Example Request</h4>
+            <pre><code>{
+  "password": "my_secure_password"
+}</code></pre>
+        </div>
+
+        <div class="response-container">
+            <h4>Response</h4>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>hash</td>
+                    <td>String</td>
+                    <td>The generated secure hash</td>
+                </tr>
+            </table>
+
+            <div class="example">
+                <h4>Example Response</h4>
+                <pre><code>{
+  "hash": "$argon2id$v=19$m=4096,t=3,p=1$c29tZXNhbHQ$EcPGna7hmsQ7UbQPSrLYpwcjrL7i5r8e0DdVZY/+c+g"
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method post">POST</span><span class="url">/verify</span></h3>
+        <p>Verifies if a password matches a previously generated hash.</p>
+
+        <h4>Request Body</h4>
+        <table>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>hashed</td>
+                <td>String</td>
+                <td>Yes</td>
+                <td>The previously generated hash</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>String</td>
+                <td>Yes</td>
+                <td>The password to verify against the hash</td>
+            </tr>
+        </table>
+
+        <div class="example">
+            <h4>Example Request</h4>
+            <pre><code>{
+  "hashed": "$argon2id$v=19$m=4096,t=3,p=1$c29tZXNhbHQ$EcPGna7hmsQ7UbQPSrLYpwcjrL7i5r8e0DdVZY/+c+g",
+  "password": "my_secure_password"
+}</code></pre>
+        </div>
+
+        <div class="response-container">
+            <h4>Response</h4>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>is_valid</td>
+                    <td>Boolean</td>
+                    <td>Indicates whether the password matches the hash</td>
+                </tr>
+            </table>
+
+            <div class="example">
+                <h4>Example Response</h4>
+                <pre><code>{
+  "is_valid": true
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <h2>Error Handling</h2>
+    <p>The API will return appropriate HTTP status codes and error messages for various scenarios:</p>
+    <table>
+        <tr>
+            <th>Status Code</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>200</td>
+            <td>Successful operation</td>
+        </tr>
+        <tr>
+            <td>400</td>
+            <td>Bad request - Invalid method or path</td>
+        </tr>
+        <tr>
+            <td>500</td>
+            <td>Server error - Failed to hash or verify password</td>
+        </tr>
+    </table>
+
+    <h2>Implementation Notes</h2>
+    <p>This API utilizes secure cryptographic hashing methods for password security. The implementation features:</p>
+    <ul>
+        <li>Secure password hashing using modern algorithms</li>
+        <li>Protection against timing attacks</li>
+        <li>Error handling with appropriate responses</li>
+    </ul>
+
+    <h2>Security Considerations</h2>
+    <ul>
+        <li>All communication with this API should be done over HTTPS to ensure secure transmission of passwords</li>
+        <li>Password hashes contain algorithm parameters and salts to ensure security</li>
+        <li>The API follows cryptographic best practices for password storage</li>
+    </ul>
+
+    <footer
+        style="margin-top: 50px; text-align: center; color: #777; border-top: 1px solid #eaecef; padding-top: 20px;">
+        <p>Password Hashing API Documentation © 2025</p>
+    </footer>
+</body>
+
+</html>
