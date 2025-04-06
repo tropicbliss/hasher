@@ -39,6 +39,6 @@ async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
             let result = hashing::verify(&input.hashed, &input.password).unwrap();
             Response::from_json(&VerifyOutput { is_valid: result })
         }
-        _ => Response::error("Only HTTP method allowed is GET or POST", 400),
+        _ => Response::error("Invalid request", 400),
     }
 }
