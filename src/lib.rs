@@ -28,7 +28,12 @@ pub struct VerifyOutput {
 async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
     console_error_panic_hook::set_once();
     match req.method() {
-        Method::Get => Response::from_html(include_str!("instructions.html")),
+        Method::Get => {
+            let mut headers = Headers::new();
+            headers.append("cache-control", "public, max-age=43200")?;
+            Response::from_html(include_str!("instructions.html"))
+                .map(|res| res.with_headers(headers))
+        }
         Method::Post if req.path() == "/hash" => {
             let input: HashInput = req.json().await?;
             let result = hashing::hash(&input.password).unwrap();
