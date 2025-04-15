@@ -28,7 +28,7 @@ pub struct VerifyOutput {
 async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
     console_error_panic_hook::set_once();
     match req.method() {
-        Method::Get => {
+        Method::Get if req.path() == "/" => {
             let mut headers = Headers::new();
             headers.append("cache-control", "public, max-age=43200")?;
             Response::from_html(include_str!("instructions.html"))
