@@ -44,6 +44,6 @@ async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
             let result = hashing::verify(&input.hash, &input.password).unwrap();
             Response::from_json(&VerifyOutput { is_valid: result })
         }
-        _ => Response::error("Invalid request", 400),
+        _ => Response::error("Resource not found", 404),
     }
 }
